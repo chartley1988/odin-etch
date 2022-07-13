@@ -1,0 +1,60 @@
+:root {
+    --color1: #22223B;
+    --color2: #4A4E69;
+    --color3: #9A8C98;
+    --color4: #C9ADA7;
+    --color5: #F2E9E4;
+    --color6: #fdfdfd;
+    --gridSize: 16;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+    background-image: radial-gradient( circle farthest-corner at 92.3% 71.5%,  rgba(83,138,214,1) 0%, rgba(134,231,214,1) 90% );       
+}
+
+header {
+    width: 100%;
+    font-size: 6rem;
+    font-weight: 900;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.45);
+    color: antiquewhite;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    clip: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 960px;
+    height: 100vh;
+    text-align: center;
+}
+
+#grid-container {
+    --canvasSize: 600px;
+    display: grid;
+    grid-template-columns: repeat(var(--gridSize), 1fr);
+    grid-template-rows: repeat(var(--gridSize), 1fr);
+    width: var(--canvasSize);
+    height: var(--canvasSize);
+    background-color: antiquewhite;
+    border-radius: 1.4rem;
+    box-shadow: 1rem 1rem 5rem rgba(0, 0, 0, 0.359);
+    justify-items: stretch;
+    align-items: stretch;
+}
+
+.grid-cell {
+    --current-color: 5
+    background-color: aquamarine;
+}
