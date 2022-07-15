@@ -3,7 +3,6 @@ const grid = document.getElementById('grid-container')
 let gridCells // Is an array of all cells
 document.addEventListener('DOMContentLoaded', init) // Calls init() once when page is loaded
 
-
 function init() { // Executes once when page is loaded.
     updateGridSizeStyle(size)
     generateCells();
@@ -18,7 +17,6 @@ function init() { // Executes once when page is loaded.
     });
 }
 
-
 // Generate cells, qty determined by grid size
 function generateCells () {
     let cellCount = size * size;
@@ -29,9 +27,26 @@ function generateCells () {
     }
 }
 
+function resetCanvas () {
+    deleteCells();
+    generateCells();
+    init();
+}
+
+function resizeCanvas() {
+    let newSize = prompt('Choose an integer 0-100 to set image size', 64);
+    size = clamp(newSize, 4, 100);
+    deleteCells();
+    generateCells();
+    init();
+}
+
 // Deletes all grid cells
 function deleteCells () {
-
+    gridContainer = document.getElementById('grid-container');
+    while(gridContainer.firstChild) {
+        gridContainer.lastChild.remove();
+    }
 }
 
 function updateGridSizeStyle(newSize) {
@@ -57,3 +72,11 @@ function updateColor(element) {
     let currentColor = getComputedStyle(element).getPropertyValue('--current-color');
     console.log(currentColor);
 }
+
+function clamp(num, min, max) {
+    return num <= min 
+      ? min 
+      : num >= max 
+        ? max 
+        : num
+  }
