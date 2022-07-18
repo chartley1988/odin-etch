@@ -71,7 +71,7 @@ button:hover {
 }
 
 .grid-cell {
-    background-color: aquamarine;
+    background-color: var(--color6);
 }
 
 .buttons-container {
