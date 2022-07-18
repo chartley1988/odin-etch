@@ -1,6 +1,9 @@
 let size = 64;
 const grid = document.getElementById('grid-container')
 let gridCells // Is an array of all cells
+const inkStyles = ["Shading", "Rainbow"];
+let currentStyle = inkStyles[0];
+
 document.addEventListener('DOMContentLoaded', init) // Calls init() once when page is loaded
 
 function init() { // Executes once when page is loaded.
@@ -11,8 +14,7 @@ function init() { // Executes once when page is loaded.
     gridCells.forEach(element => {
         element.addEventListener("mouseenter", function() {
             colors = getColors();
-            updateColor(element);
-            element.style.backgroundColor = colors[3];
+            updateColor(element, colors[0]);
         })
     });
 }
@@ -68,9 +70,73 @@ function getColors() {
     return [color1, color2, color3, color4, color5]
 }
 
-function updateColor(element) {
-    let currentColor = getComputedStyle(element).getPropertyValue('--current-color');
+function updateColor(element, newColor) { // Changes a cell (element) to a new color
+    if (newColor === 'shade') {
+        newColor = shadeColor(element);
+    }
+    element.style.backgroundColor = newColor;
+}
+
+function changeStyle() {
+    const colors = getColors();
+    const styleButton = document.getElementById('style-change');
+    let styleColor = colors[0];
+
+    // Change to Rainbow Shading
+    if (currentStyle===inkStyles[0]) {
+        currentStyle = inkStyles[1];
+        styleButton.textContent= ('Ink style: ' + currentStyle);
+        styleColor = colors[3];
+        styleColor = function() {
+            let r = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            return(`rgb(${r},${g},${b})`)
+        }
+
+    // Change to normal shading
+    } else if (currentStyle===inkStyles[1]) {
+        currentStyle = inkStyles[0];
+        styleButton.textContent= ('Ink style: ' + currentStyle);
+        styleColor = function() {return "shade"};
+    }  
+  
+
+    getGridCells();
+    gridCells.forEach(element => {
+        element.addEventListener("mouseenter", function() {
+            updateColor(element, styleColor());
+        })
+    });
+}
+
+function getCurrentColor(cell) {
+    const originalColor = cell.style.backgroundColor;
+    return(originalColor);
+}
+
+function shadeColor(cell) {
+    let currentColor = getCurrentColor(cell);
+
+    const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
     console.log(currentColor);
+    currentColor = rgb2hex(currentColor);
+    console.log(currentColor);
+
+    function darken(col, amt) {
+        var num = parseInt(col, 16);
+        var r = (num >> 16) + amt;
+        var b = ((num >> 8) & 0x00FF) + amt;
+        var g = (num & 0x0000FF) + amt;
+        var newColor = g | (b << 8) | (r << 16);
+        return newColor.toString(16);
+    }
+    currentColor = darken(currentColor, 10);
+    return(currentColor);
+
+
+
 }
 
 function clamp(num, min, max) {
