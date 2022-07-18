@@ -4,6 +4,18 @@ let gridCells // Is an array of all cells
 const inkStyles = ["Shading", "Rainbow"];
 let currentStyle = inkStyles[0];
 
+////////////////////////////////// - DAVE
+let shadingToggle = false; // basically a holding contact, swaps true/false
+
+const shadingButton = document.getElementById("colorShading"); // grabbing the new button from the html... I think this is the preffered method to adding js to the html file.
+shadingButton.addEventListener("click", toggleShadingHolder); // when the buttons clicked, all it does is toggle my shading contact on/ off
+
+function toggleShadingHolder() {
+  //this is the function that toggles the true/false.
+  shadingToggle === true ? (shadingToggle = false) : (shadingToggle = true);
+}
+////////////////////////////////// - DAVE
+
 document.addEventListener('DOMContentLoaded', init) // Calls init() once when page is loaded
 
 function init() { // Executes once when page is loaded.
@@ -12,10 +24,23 @@ function init() { // Executes once when page is loaded.
     gridCells = getGridCells();
     
     gridCells.forEach(element => {
-        element.addEventListener("mouseenter", function() {
+        element.addEventListener("mouseenter", function(e) {
+                  //I added the event (e) to your listener... useful badboy that is
+      ////////////////////////////////// - DAVE
+            if (shadingToggle === true) {
+                if (e.target.opacity === undefined) {
+          //this will only happen if its the first time entering... if the event target that you mouseentered had no opacity trait then give it one.
+                e.target.opacity = 0.2;
+                } else {
+                    e.target.opacity += 0.2; //if its not the first time, increase by 0.2
+                }
+            e.target.style.backgroundColor = "black";
+            e.target.style.opacity = e.target.opacity;
+            } else {
+        ////////////////////////////////// - DAVE
             colors = getColors();
             updateColor(element, colors[0]);
-        })
+        }})
     });
 }
 
@@ -73,6 +98,7 @@ function getColors() {
 function updateColor(element, newColor) { // Changes a cell (element) to a new color
     if (newColor === 'shade') {
         newColor = shadeColor(element);
+        console.log(newColor);
     }
     element.style.backgroundColor = newColor;
 }
@@ -120,9 +146,7 @@ function shadeColor(cell) {
 
     const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
-    console.log(currentColor);
     currentColor = rgb2hex(currentColor);
-    console.log(currentColor);
 
     function darken(col, amt) {
         var num = parseInt(col, 16);

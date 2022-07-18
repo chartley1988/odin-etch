@@ -71,7 +71,6 @@ button:hover {
 }
 
 .grid-cell {
-    --current-color: 5
     background-color: aquamarine;
 }
 
